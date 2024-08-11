@@ -24,12 +24,11 @@ stock_codes
 
 
 # 获取2023年的所有股票信息
-data = get_price(stock_codes, '20230101 09:00', '20231231 16:00', '1m', ['close', 'open', 'low', 'high'])
-# 读取20234年所有股票的数据，存入data
-## data = get_price(['000001.SZ', '600519.SH'], '20230101 09:00', '20231231 16:00', '1m', ['close', 'open', 'low', 'high'])
-dtb_stocks = {} # 创建空的结果字典，用于保存每只股票的次日和后三日涨跌幅
+data = get_price(stock_codes, '20230101 09:00', '20231231 16:00', '1d', ['close', 'open', 'low', 'high'])
 
-###
+
+dtb_stocks = {} # 创建空的结果字典，用于保存每只股票的次日和后三日涨跌幅
+    
 for stock, df in data.items():
     # 筛选地天板条件：开盘价等于最低价，收盘价等于最高价
     is_dtb = (df['open'] == df['low']) & (df['close'] == df['high'])
@@ -38,20 +37,15 @@ for stock, df in data.items():
     dtb_dates = df[is_dtb]
     
     if not dtb_dates.empty:
-        dtb_stocks[stock] = dtb_dates
-        
+        dtb_stocks[stock] = dtb_dates       
+    
+    
+######
+# 创建一个新的字典results用于存储符合要求的股票的次日涨跌幅和后三日涨跌幅
+results = {}
 
-# 打印结果
-for stock, dtb_df in dtb_stocks.items():
-    print(f"地天板股票: {stock}")
-    print(dtb_df)
-    
-    
-    
-    
-###
 # 计算次日涨跌幅和后三日涨跌幅   
-for stock, df in data.items():
+for stock, df in dtb_stocks.items():
     # 计算次日涨跌幅
     df['next_day_return'] = (df['close'].shift(-1) - df['close']) / df['close'] * 100
     
@@ -67,7 +61,7 @@ for stock, df in data.items():
 final_df = pd.concat(results)
 
 # 展示结果
-print(final_df)
+final_df.head()
 
 # 如果需要将结果保存为Excel文件
 final_df.to_excel("all_stocks_returns_2023.xlsx")
