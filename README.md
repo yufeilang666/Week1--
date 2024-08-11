@@ -65,4 +65,21 @@ final_df.head()
 
 # 如果需要将结果保存为Excel文件
 final_df.to_excel("all_stocks_returns_2023.xlsx")
+[all_stocks_returns_2023.xlsx](https://github.com/user-attachments/files/16575650/all_stocks_returns_2023.xlsx)
+
+
+### -导出在2023年，选股指标为“10：00前成交额排序，当日涨跌幅，5日均线斜率>-10，前三个交易日区间涨幅，后一个交易日最大涨幅，后一个交易日涨幅，前三个交易日区间涨幅在-10%到15%之间”，取每个交易日前两个数据，输出到excel!
+df2 = query_iwencai("10：00前成交额排序, 涨跌幅, 5日均线斜率>-10, 前三个交易日区间涨幅, 后一个交易日最大涨幅, 后一个交易日涨幅, 前三个交易日区间涨幅在-10%到15%之间")
+df2 = pd.DataFrame(df2) 
+df2.to_excel('output2.xlsx', index=False, engine='xlsxwriter')
+[output2.xlsx](https://github.com/user-attachments/files/16575651/output2.xlsx)
+
+
+
+
+
+
+
+
+
 
